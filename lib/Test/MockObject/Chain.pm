@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use Want;
 use vars '$AUTOLOAD';
+use Carp;
 
 our $VERSION = '0.01';
 
@@ -31,6 +32,9 @@ sub AUTOLOAD: lvalue {
   if(not $self->_method_exists( $method, $key ) ) {
     if(want('OBJECT')) {
       $self->_add_method($method, \@_, Test::MockObject::Chain->new() );
+    }
+    else {
+      carp "Attempt to read uninitialised method $method with key $key" unless want('LVALUE');
     }
   }
 
