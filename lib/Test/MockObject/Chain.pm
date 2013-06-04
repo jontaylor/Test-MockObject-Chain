@@ -6,10 +6,11 @@ use warnings;
 use Want;
 use vars '$AUTOLOAD';
 use Carp;
+use Scalar::Util qw( blessed );
 
 our $VERSION = '0.01';
 
-sub new {
+sub _new {
     shift;
     my %args = @_;
     $args{type} ||= {};
@@ -24,6 +25,12 @@ sub new {
 
 sub AUTOLOAD: lvalue {
   my $self = shift;
+
+  unless( blessed($self)) {
+    $self = $self->_new() ;
+    return $self;
+  }  
+
   ( my $method = $AUTOLOAD ) =~ s{.*::}{};
   my @params = @_;
 
@@ -31,7 +38,7 @@ sub AUTOLOAD: lvalue {
 
   if(not $self->_method_exists( $method, $key ) ) {
     if(want('OBJECT')) {
-      $self->_add_method($method, \@_, Test::MockObject::Chain->new() );
+      $self->_add_method($method, \@_, Test::MockObject::Chain->_new() );
     }
     else {
       carp "Attempt to read uninitialised method $method with key $key" unless want('LVALUE');

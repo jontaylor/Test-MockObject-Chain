@@ -18,9 +18,9 @@ BEGIN { use_ok('Test::MockObject::Chain') };
 
 my $fake = Test::MockObject::Chain->new();
 
-$fake->test(1) = 20;
+$fake->test() = 20;
 #my $result = $fake->test();
-is($fake->test(1), 20);
+is($fake->test(), 20);
 
 is($fake->test(2), undef);
 $fake->test(2) = 4;
