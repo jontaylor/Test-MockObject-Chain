@@ -8,7 +8,7 @@ use vars '$AUTOLOAD';
 use Carp;
 use Scalar::Util qw( blessed );
 
-our $VERSION = '0.01';
+our $VERSION = '1.00';
 
 sub _new {
     shift;
